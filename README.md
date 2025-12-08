@@ -1,59 +1,206 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Svelara Events App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema completo de gestión de eventos desarrollado con Laravel 12, Svelte 5, Inertia.js y PostgreSQL.
 
-## About Laravel
+## 🚀 Stack Tecnológico
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Backend
+- **Laravel 12** - Framework PHP
+- **PostgreSQL** - Base de datos
+- **Spatie Laravel Permission** - Sistema de roles y permisos
+- **Inertia.js** - Bridge Laravel-Svelte
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Frontend
+- **Svelte 5** - Framework JavaScript reactivo
+- **Tailwind CSS** - Framework de estilos
+- **Vite** - Build tool
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Características Principales
 
-## Learning Laravel
+### Sistema de Roles
+- **Super Admin** - Control total del sistema
+- **Organizador** - Crear y gestionar eventos
+- **Asistente** - Registrarse y asistir a eventos
+- **Guest** - Ver eventos públicos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Gestión de Eventos
+- ✅ Eventos públicos y privados
+- ✅ Eventos gratuitos y de pago
+- ✅ Sistema de capacidad y lista de espera
+- ✅ Categorías y etiquetas
+- ✅ Galería de imágenes
+- ✅ Eventos online y presenciales
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Sistema de Tickets
+- ✅ Generación automática de tickets con QR
+- ✅ Check-in con escaneo de QR
+- ✅ Tickets únicos por asistente
 
-## Laravel Sponsors
+### Sistema de Pagos
+- 💳 Integración con múltiples gateways:
+  - Stripe
+  - PayPal
+  - MercadoPago
+- ✅ Sistema de reembolsos
+- ✅ Historial de transacciones
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Invitaciones
+- ✅ Sistema de invitaciones con tokens únicos
+- ✅ Eventos privados por invitación
+- ✅ Tracking de invitaciones (pendiente, aceptada, rechazada)
 
-### Premium Partners
+### Notificaciones
+- 📧 Email (confirmaciones, recordatorios)
+- 🔔 In-app notifications
+- 📱 Push notifications (futuro)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Activity Logs
+- 📊 Seguimiento completo de acciones
+- 🔍 Auditoría del sistema
+- 📝 Logs detallados con metadata
 
-## Contributing
+## 📦 Estructura de Base de Datos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `users` - Usuarios del sistema
+- `events` - Eventos
+- `categories` - Categorías de eventos
+- `tags` - Etiquetas
+- `event_user` - Asistentes (tabla pivote)
+- `tickets` - Tickets con QR
+- `payments` - Pagos procesados
+- `event_images` - Galería de imágenes
+- `event_invitations` - Invitaciones a eventos privados
+- `activity_logs` - Logs de actividad del sistema
+- `notifications` - Notificaciones
 
-## Code of Conduct
+## 🛠️ Instalación
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# Clonar repositorio
+git clone https://github.com/tu-usuario/svelara-events-app.git
+cd svelara-events-app
 
-## Security Vulnerabilities
+# Instalar dependencias PHP
+composer install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Instalar dependencias Node
+npm install
 
-## License
+# Copiar archivo de configuración
+cp .env.example .env
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Generar key de aplicación
+php artisan key:generate
+
+# Configurar base de datos en .env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=event_management
+DB_USERNAME=postgres
+DB_PASSWORD=tu_password
+
+# Ejecutar migraciones
+php artisan migrate
+
+# Ejecutar seeders (opcional)
+php artisan db:seed
+
+# Crear enlace simbólico para storage
+php artisan storage:link
+
+# Compilar assets
+npm run dev
+```
+
+## 🚦 Uso
+
+### Desarrollo
+```bash
+# Terminal 1 - Servidor Laravel
+php artisan serve
+
+# Terminal 2 - Compilación de assets
+npm run dev
+```
+
+### Producción
+```bash
+# Compilar assets para producción
+npm run build
+
+# Optimizar aplicación
+php artisan optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+## 📋 Características por Implementar
+
+### Fase 1 - Core
+- [x] Sistema de autenticación
+- [x] CRUD de eventos
+- [x] Sistema de roles y permisos
+- [x] Registro a eventos
+- [x] Sistema de tickets
+
+### Fase 2 - Avanzado
+- [ ] Integración de pagos
+- [ ] Sistema de notificaciones completo
+- [ ] Check-in con QR
+- [ ] Dashboard de organizador
+- [ ] Panel de administración
+
+### Fase 3 - Mejoras
+- [ ] Búsqueda avanzada y filtros
+- [ ] Estadísticas y reportes
+- [ ] Exportación de datos
+- [ ] API pública
+- [ ] PWA
+
+## 🔐 Seguridad
+
+- ✅ CSRF Protection
+- ✅ XSS Prevention
+- ✅ SQL Injection Prevention (Eloquent ORM)
+- ✅ Rate Limiting
+- ✅ Password Hashing (Bcrypt)
+- ✅ Email Verification
+- ✅ Role-based Access Control
+
+## 📊 Características Técnicas
+
+- **UUIDs** en rutas para mayor seguridad
+- **Soft Deletes** en eventos
+- **Activity Logging** automático
+- **Eager Loading** para optimizar queries
+- **Scopes** para queries reutilizables
+- **Policies** para autorización
+- **Form Requests** para validación
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+## 👤 Autor
+
+**Tu Nombre**
+- GitHub: [@Alejo-Santis](https://github.com/Alejo-Santis)
+
+## 🙏 Agradecimientos
+
+- Laravel Framework
+- Svelte Community
+- Spatie Laravel Permission
+- Inertia.js Team
