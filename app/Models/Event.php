@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Event\EventStatus;
+use App\Enums\Event\EventUserStatus;
 use App\Traits\HasUuid;
 use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +16,7 @@ use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    use HasFactory, SoftDeletes, HasUuid, LogsActivity;
+    use HasFactory, HasUuid, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -55,6 +57,7 @@ class Event extends Model
         'price' => 'decimal:2',
         'capacity' => 'integer',
         'views_count' => 'integer',
+        'status' => EventStatus::class,
     ];
 
     /**
@@ -147,7 +150,7 @@ class Event extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true)
-            ->where('status', 'published');
+            ->where('status', EventStatus::PUBLISHED);
     }
 
     /**
@@ -212,13 +215,13 @@ class Event extends Model
      */
     public function scopeSearch($query, ?string $search)
     {
-        if (!$search) {
+        if (! $search) {
             return $query;
         }
 
         return $query->where(function ($q) use ($search) {
             $q->where('title', 'ILIKE', "%{$search}%")
-              ->orWhere('description', 'ILIKE', "%{$search}%");
+                ->orWhere('description', 'ILIKE', "%{$search}%");
         });
     }
 
@@ -261,7 +264,7 @@ class Event extends Model
     {
         return $query->where(function ($q) {
             $q->whereNull('capacity')
-              ->orWhereRaw('capacity > (SELECT COUNT(*) FROM event_user WHERE event_id = events.id AND status = ?)', ['registered']);
+                ->orWhereRaw('capacity > (SELECT COUNT(*) FROM event_user WHERE event_id = events.id AND status = ?)', ['registered']);
         });
     }
 
@@ -273,7 +276,7 @@ class Event extends Model
     public function getFeaturedImageUrlAttribute(): string
     {
         if ($this->featured_image) {
-            return asset('storage/' . $this->featured_image);
+            return asset('storage/'.$this->featured_image);
         }
 
         return asset('images/default-event.jpg');
@@ -284,7 +287,7 @@ class Event extends Model
      */
     public function isFull(): bool
     {
-        if (!$this->capacity) {
+        if (! $this->capacity) {
             return false;
         }
 
@@ -297,7 +300,7 @@ class Event extends Model
     public function registeredAttendeesCount(): int
     {
         return $this->attendees()
-            ->wherePivot('status', 'registered')
+            ->wherePivot('status', EventUserStatus::REGISTERED)
             ->count();
     }
 
@@ -307,7 +310,7 @@ class Event extends Model
     public function attendedAttendeesCount(): int
     {
         return $this->attendees()
-            ->wherePivot('status', 'attended')
+            ->wherePivot('status', EventUserStatus::ATTENDED)
             ->count();
     }
 
@@ -316,7 +319,7 @@ class Event extends Model
      */
     public function availableSpots(): ?int
     {
-        if (!$this->capacity) {
+        if (! $this->capacity) {
             return null;
         }
 
@@ -344,7 +347,7 @@ class Event extends Model
      */
     public function isOngoing(): bool
     {
-        return $this->hasStarted() && !$this->hasEnded();
+        return $this->hasStarted() && ! $this->hasEnded();
     }
 
     /**
@@ -360,7 +363,7 @@ class Event extends Model
             return false;
         }
 
-        if ($this->isFull() && !$this->allow_waitlist) {
+        if ($this->isFull() && ! $this->allow_waitlist) {
             return false;
         }
 
@@ -389,15 +392,15 @@ class Event extends Model
     public function getFormattedDuration(): string
     {
         $hours = $this->getDurationInHours();
-        
+
         if ($hours < 1) {
-            return $this->start_date->diffInMinutes($this->end_date) . ' minutos';
+            return $this->start_date->diffInMinutes($this->end_date).' minutos';
         }
-        
+
         if ($hours < 24) {
-            return round($hours, 1) . ' horas';
+            return round($hours, 1).' horas';
         }
-        
-        return $this->start_date->diffInDays($this->end_date) . ' días';
+
+        return $this->start_date->diffInDays($this->end_date).' días';
     }
 }

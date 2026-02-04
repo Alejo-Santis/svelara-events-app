@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Role\RoleName;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -15,19 +16,19 @@ class RoleSeeder extends Seeder
         // Crear roles del sistema
         $roles = [
             [
-                'name' => 'super_admin',
+                'name' => RoleName::SUPER_ADMIN,
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'organizer',
+                'name' => RoleName::ORGANIZER,
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'attendee',
+                'name' => RoleName::ATTENDEE,
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'guest',
+                'name' => RoleName::GUEST,
                 'guard_name' => 'web',
             ],
         ];

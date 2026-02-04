@@ -6,15 +6,15 @@ use App\Traits\HasUuid;
 use App\Traits\LogsActivity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasRoles, HasUuid, LogsActivity;
+    use HasFactory, HasRoles, HasUuid, LogsActivity, Notifiable;
 
     protected $fillable = [
         'name',
@@ -113,13 +113,13 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function scopeSearch($query, ?string $search)
     {
-        if (!$search) {
+        if (! $search) {
             return $query;
         }
 
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'ILIKE', "%{$search}%")
-              ->orWhere('email', 'ILIKE', "%{$search}%");
+                ->orWhere('email', 'ILIKE', "%{$search}%");
         });
     }
 
@@ -171,11 +171,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getAvatarUrlAttribute(): string
     {
         if ($this->avatar) {
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
 
         // Gravatar como fallback
         $hash = md5(strtolower(trim($this->email)));
+
         return "https://www.gravatar.com/avatar/{$hash}?d=mp&s=200";
     }
 

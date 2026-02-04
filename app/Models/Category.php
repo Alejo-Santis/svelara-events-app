@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Event\EventStatus;
 use App\Traits\HasUuid;
 use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -105,7 +106,7 @@ class Category extends Model
     {
         return $this->events()
             ->where('is_published', true)
-            ->where('status', 'published')
+            ->where('status', EventStatus::PUBLISHED)
             ->count();
     }
 }

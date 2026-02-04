@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\Event\EventInvitationStatus;
 use App\Traits\HasUuid;
 use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class EventInvitation extends Model
 {
@@ -29,6 +31,7 @@ class EventInvitation extends Model
         'sent_at' => 'datetime',
         'accepted_at' => 'datetime',
         'expires_at' => 'datetime',
+        'status' => EventInvitationStatus::class,
     ];
 
     /**
@@ -78,7 +81,7 @@ class EventInvitation extends Model
      */
     public function scopePending($query)
     {
-        return $query->where('status', 'pending');
+        return $query->where('status', EventInvitationStatus::PENDING);
     }
 
     /**
@@ -86,7 +89,7 @@ class EventInvitation extends Model
      */
     public function scopeAccepted($query)
     {
-        return $query->where('status', 'accepted');
+        return $query->where('status', EventInvitationStatus::ACCEPTED);
     }
 
     /**
@@ -94,7 +97,7 @@ class EventInvitation extends Model
      */
     public function scopeRejected($query)
     {
-        return $query->where('status', 'rejected');
+        return $query->where('status', EventInvitationStatus::REJECTED);
     }
 
     /**
@@ -103,11 +106,11 @@ class EventInvitation extends Model
     public function scopeExpired($query)
     {
         return $query->where(function ($q) {
-            $q->where('status', 'expired')
-              ->orWhere(function ($q2) {
-                  $q2->where('status', 'pending')
-                     ->where('expires_at', '<', now());
-              });
+            $q->where('status', EventInvitationStatus::EXPIRED)
+                ->orWhere(function ($q2) {
+                    $q2->where('status', EventInvitationStatus::PENDING)
+                        ->where('expires_at', '<', now());
+                });
         });
     }
 
@@ -116,7 +119,7 @@ class EventInvitation extends Model
      */
     public function scopeValid($query)
     {
-        return $query->where('status', 'pending')
+        return $query->where('status', EventInvitationStatus::PENDING)
             ->where('expires_at', '>', now());
     }
 
@@ -136,7 +139,7 @@ class EventInvitation extends Model
     public static function generateToken(): string
     {
         do {
-            $token = Str::random(40);
+            $token = Uuid::uuid4()->toString();
         } while (self::where('token', $token)->exists());
 
         return $token;
@@ -147,7 +150,7 @@ class EventInvitation extends Model
      */
     public function isValid(): bool
     {
-        if ($this->status !== 'pending') {
+        if ($this->status !== EventInvitationStatus::PENDING) {
             return false;
         }
 
@@ -172,7 +175,7 @@ class EventInvitation extends Model
     public function accept(?User $user = null): void
     {
         $data = [
-            'status' => 'accepted',
+            'status' => EventInvitationStatus::ACCEPTED,
             'accepted_at' => now(),
         ];
 
@@ -188,7 +191,7 @@ class EventInvitation extends Model
      */
     public function reject(): void
     {
-        $this->update(['status' => 'rejected']);
+        $this->update(['status' => EventInvitationStatus::REJECTED]);
     }
 
     /**
@@ -196,7 +199,7 @@ class EventInvitation extends Model
      */
     public function markAsExpired(): void
     {
-        $this->update(['status' => 'expired']);
+        $this->update(['status' => EventInvitationStatus::EXPIRED]);
     }
 
     /**

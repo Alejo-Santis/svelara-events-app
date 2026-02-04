@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Payment\PaymentCurrencySymbol;
+use App\Enums\Payment\PaymentMethod;
+use App\Enums\Payment\PaymentStatus;
 use App\Traits\HasUuid;
 use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +35,7 @@ class Payment extends Model
         'payment_date' => 'datetime',
         'refund_date' => 'datetime',
         'metadata' => 'array',
+        'status' => PaymentStatus::class,
     ];
 
     // ========== RELACIONES ==========
@@ -67,7 +71,7 @@ class Payment extends Model
      */
     public function scopeCompleted($query)
     {
-        return $query->where('status', 'completed');
+        return $query->where('status', PaymentStatus::COMPLETED);
     }
 
     /**
@@ -75,7 +79,7 @@ class Payment extends Model
      */
     public function scopePending($query)
     {
-        return $query->where('status', 'pending');
+        return $query->where('status', PaymentStatus::PENDING);
     }
 
     /**
@@ -83,7 +87,7 @@ class Payment extends Model
      */
     public function scopeFailed($query)
     {
-        return $query->where('status', 'failed');
+        return $query->where('status', PaymentStatus::FAILED);
     }
 
     /**
@@ -91,7 +95,7 @@ class Payment extends Model
      */
     public function scopeRefunded($query)
     {
-        return $query->where('status', 'refunded');
+        return $query->where('status', PaymentStatus::REFUNDED);
     }
 
     /**
@@ -109,7 +113,7 @@ class Payment extends Model
      */
     public function isCompleted(): bool
     {
-        return $this->status === 'completed';
+        return $this->status === PaymentStatus::COMPLETED;
     }
 
     /**
@@ -117,7 +121,7 @@ class Payment extends Model
      */
     public function isPending(): bool
     {
-        return $this->status === 'pending';
+        return $this->status === PaymentStatus::PENDING;
     }
 
     /**
@@ -125,7 +129,7 @@ class Payment extends Model
      */
     public function isRefunded(): bool
     {
-        return $this->status === 'refunded';
+        return $this->status === PaymentStatus::REFUNDED;
     }
 
     /**
@@ -134,7 +138,7 @@ class Payment extends Model
     public function markAsCompleted(): void
     {
         $this->update([
-            'status' => 'completed',
+            'status' => PaymentStatus::COMPLETED,
             'payment_date' => now(),
         ]);
     }
@@ -144,16 +148,16 @@ class Payment extends Model
      */
     public function markAsFailed(): void
     {
-        $this->update(['status' => 'failed']);
+        $this->update(['status' => PaymentStatus::FAILED]);
     }
 
     /**
      * Procesar reembolso
      */
-    public function refund(string $reason = null): void
+    public function refund(string|null $reason = null): void
     {
         $this->update([
-            'status' => 'refunded',
+            'status' => PaymentStatus::REFUNDED,
             'refund_date' => now(),
             'refund_reason' => $reason,
         ]);
@@ -165,10 +169,14 @@ class Payment extends Model
     public function getPaymentMethodNameAttribute(): string
     {
         return match($this->payment_method) {
-            'stripe' => 'Stripe',
-            'paypal' => 'PayPal',
-            'mercadopago' => 'MercadoPago',
-            default => ucfirst($this->payment_method),
+            'stripe' => PaymentMethod::STRIPE->label(),
+            'paypal' => PaymentMethod::PAYPAL->label(),
+            'mercadopago' => PaymentMethod::MERCADOPAGO->label(),
+            'cash' => PaymentMethod::CASH->label(),
+            'bank_transfer' => PaymentMethod::BANK_TRANSFER->label(),
+            'credit_card' => PaymentMethod::CREDIT_CARD->label(),
+            'debit_card' => PaymentMethod::DEBIT_CARD->label(),
+            'other' => PaymentMethod::OTHER->label(),
         };
     }
 
@@ -178,10 +186,10 @@ class Payment extends Model
     public function getCurrencySymbolAttribute(): string
     {
         return match($this->currency) {
-            'USD' => '$',
-            'EUR' => '€',
-            'COP' => '$',
-            'MXN' => '$',
+            'USD' => PaymentCurrencySymbol::USD->symbol(),
+            'EUR' => PaymentCurrencySymbol::EUR->symbol(),
+            'COP' => PaymentCurrencySymbol::COP->symbol(),
+            'MXN' => PaymentCurrencySymbol::MXN->symbol(),
             default => $this->currency,
         };
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Ticket\TicketStatus;
 use App\Traits\HasUuid;
 use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +31,7 @@ class Ticket extends Model
         'used_at' => 'datetime',
         'issued_at' => 'datetime',
         'expires_at' => 'datetime',
+        'status' => TicketStatus::class,
     ];
 
     /**
@@ -79,7 +81,7 @@ class Ticket extends Model
      */
     public function scopeActive($query)
     {
-        return $query->where('status', 'active');
+        return $query->where('status', TicketStatus::ACTIVE);
     }
 
     /**
@@ -87,7 +89,7 @@ class Ticket extends Model
      */
     public function scopeUsed($query)
     {
-        return $query->where('status', 'used');
+        return $query->where('status', TicketStatus::USED);
     }
 
     /**
@@ -95,10 +97,10 @@ class Ticket extends Model
      */
     public function scopeValid($query)
     {
-        return $query->where('status', 'active')
+        return $query->where('status', TicketStatus::ACTIVE)
             ->where(function ($q) {
                 $q->whereNull('expires_at')
-                  ->orWhere('expires_at', '>', now());
+                    ->orWhere('expires_at', '>', now());
             });
     }
 
@@ -110,7 +112,7 @@ class Ticket extends Model
     public static function generateTicketNumber(): string
     {
         do {
-            $number = 'TKT-' . strtoupper(substr(md5(uniqid(rand(), true)), 0, 10));
+            $number = 'TKT-'.strtoupper(substr(md5(uniqid(rand(), true)), 0, 10));
         } while (self::where('ticket_number', $number)->exists());
 
         return $number;
@@ -121,7 +123,7 @@ class Ticket extends Model
      */
     public function isValid(): bool
     {
-        if ($this->status !== 'active') {
+        if ($this->status !== TicketStatus::ACTIVE) {
             return false;
         }
 
@@ -138,7 +140,7 @@ class Ticket extends Model
     public function markAsUsed(): void
     {
         $this->update([
-            'status' => 'used',
+            'status' => TicketStatus::USED,
             'used_at' => now(),
         ]);
     }
@@ -148,7 +150,7 @@ class Ticket extends Model
      */
     public function cancel(): void
     {
-        $this->update(['status' => 'cancelled']);
+        $this->update(['status' => TicketStatus::CANCELLED]);
     }
 
     /**
@@ -161,6 +163,7 @@ class Ticket extends Model
             if (filter_var($this->qr_code, FILTER_VALIDATE_URL)) {
                 return $this->qr_code;
             }
+
             // Si es base64, devolverlo tal cual
             return $this->qr_code;
         }
