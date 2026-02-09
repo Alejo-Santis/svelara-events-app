@@ -1,0 +1,51 @@
+<svg width="600" height="500" viewBox="0 0 600 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background elements -->
+  <circle cx="450" cy="100" r="80" fill="#5D87FF" opacity="0.1"/>
+  <circle cx="150" cy="400" r="60" fill="#49BEFF" opacity="0.1"/>
+
+  <!-- Main calendar/event illustration -->
+  <rect x="150" y="100" width="300" height="350" rx="12" fill="white" stroke="#E5EAEF" stroke-width="2"/>
+
+  <!-- Calendar header -->
+  <rect x="150" y="100" width="300" height="60" rx="12" fill="#5D87FF"/>
+  <circle cx="190" cy="130" r="8" fill="white" opacity="0.8"/>
+  <circle cx="220" cy="130" r="8" fill="white" opacity="0.8"/>
+  <circle cx="250" cy="130" r="8" fill="white" opacity="0.8"/>
+
+  <!-- Calendar grid -->
+  <rect x="170" y="180" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="235" y="180" width="50" height="45" rx="6" fill="#5D87FF" opacity="0.2"/>
+  <rect x="300" y="180" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="365" y="180" width="50" height="45" rx="6" fill="#F5F7FA"/>
+
+  <rect x="170" y="240" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="235" y="240" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="300" y="240" width="50" height="45" rx="6" fill="#49BEFF" opacity="0.3"/>
+  <rect x="365" y="240" width="50" height="45" rx="6" fill="#F5F7FA"/>
+
+  <rect x="170" y="300" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="235" y="300" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="300" y="300" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="365" y="300" width="50" height="45" rx="6" fill="#13DEB9" opacity="0.3"/>
+
+  <rect x="170" y="360" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="235" y="360" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="300" y="360" width="50" height="45" rx="6" fill="#F5F7FA"/>
+  <rect x="365" y="360" width="50" height="45" rx="6" fill="#F5F7FA"/>
+
+  <!-- Decorative elements -->
+  <circle cx="520" cy="200" r="40" fill="#FFAE1F" opacity="0.15"/>
+  <circle cx="80" cy="150" r="30" fill="#FA896B" opacity="0.15"/>
+
+  <!-- Ticket icon -->
+  <rect x="470" y="320" width="100" height="60" rx="8" fill="#5D87FF" opacity="0.9"/>
+  <line x1="490" y1="320" x2="490" y2="380" stroke="white" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"/>
+  <rect x="475" y="335" width="20" height="8" rx="2" fill="white" opacity="0.8"/>
+  <rect x="475" y="350" width="30" height="6" rx="2" fill="white" opacity="0.6"/>
+  <rect x="475" y="360" width="25" height="6" rx="2" fill="white" opacity="0.6"/>
+
+  <!-- Stars/sparkles -->
+  <path d="M530 360 L533 367 L540 367 L534 372 L537 379 L530 374 L523 379 L526 372 L520 367 L527 367 Z" fill="#FFAE1F" opacity="0.7"/>
+  <path d="M70 250 L72 255 L77 255 L73 258 L75 263 L70 259 L65 263 L67 258 L63 255 L68 255 Z" fill="#49BEFF" opacity="0.7"/>
+  <path d="M550 120 L552 125 L557 125 L553 128 L555 133 L550 129 L545 133 L547 128 L543 125 L548 125 Z" fill="#13DEB9" opacity="0.7"/>
+</svg>
