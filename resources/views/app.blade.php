@@ -17,6 +17,24 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         @inertiaHead
+
+        <style>
+            body, html {
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow-x: hidden;
+            }
+            #app, .page-wrapper, #main-wrapper {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .body-wrapper {
+                padding-top: 70px !important;
+            }
+            .app-header {
+                top: 0 !important;
+            }
+        </style>
     </head>
     <body>
         @inertia

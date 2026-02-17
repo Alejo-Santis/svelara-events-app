@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\EventController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Dashboard\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,15 +52,5 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 Route::middleware(['auth'])->group(function () {
     // Dashboard routes
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard/Index', [
-            'upcomingEvents' => [],
-            'recentTickets' => [],
-            'stats' => [
-                'registered_events' => 0,
-                'active_tickets' => 0,
-                'attended_events' => 0,
-            ]
-        ]);
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
